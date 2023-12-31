@@ -102,8 +102,8 @@ ${post.moTa}
 Tool tạo bài viết: https://chodengundamvn.vercel.app
 ${defaultTag} ${renderTags()} ${convertAndAddHash(post.tenSP)}
 `;
-    if (!post.tenSP || !post.giaBan) {
-      toast.error("Nhập giá và tên sản phẩm giúp t ông nội ơi!!!", {
+    if (!post.tenSP) {
+      toast.error("Nhập  tên sản phẩm giúp t ông nội ơi!!!", {
         duration: 3000,
       });
     } else {
@@ -117,13 +117,20 @@ ${defaultTag} ${renderTags()} ${convertAndAddHash(post.tenSP)}
       <div className="grid grid-cols-2 gap-2">
         <SelectBox
           label="Hình thức"
-          options={["Cần bán", "Cần mua", "Pre order", "Trade","Pass slot", "Bid"]}
+          options={[
+            "Cần bán",
+            "Cần mua",
+            "Pre order",
+            "Trade",
+            "Pass slot",
+            "Bid",
+          ]}
           handleChange={(e) => setPost((v) => ({ ...v, hinhThuc: e }))}
           value={post.hinhThuc}
         />
         <SelectBox
           label="Tình trạng"
-          options={["Hàng new", "Slot Pre order","2nd", "Open check"]}
+          options={["Hàng new", "Slot Pre order", "2nd", "Open check"]}
           handleChange={(e) => setPost((v) => ({ ...v, tinhTrang: e }))}
           value={post.tinhTrang}
         />
@@ -136,7 +143,6 @@ ${defaultTag} ${renderTags()} ${convertAndAddHash(post.tenSP)}
             label="Tên sản phẩm"
             placeholder="Nhập tên sản phẩm"
             type="text"
-            
             value={post.tenSP}
           />
         </div>
@@ -157,7 +163,6 @@ ${defaultTag} ${renderTags()} ${convertAndAddHash(post.tenSP)}
           label="Giá bán"
           placeholder="Nhập giá sản phẩm"
           type="number"
-        
         />
         <InputBox
           id="coc"
