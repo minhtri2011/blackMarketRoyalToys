@@ -1,0 +1,1 @@
+export const defaultTag='#CDGVN #ChoDen #GundamVN #RoyalToysTool'
