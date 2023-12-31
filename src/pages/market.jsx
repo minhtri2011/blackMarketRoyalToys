@@ -4,6 +4,7 @@ import InputBox from "../components/inputBox";
 import TextArea from "../components/textArea";
 import { defaultTag } from "../config/config";
 import unidecode from "unidecode";
+import toast from "react-hot-toast";
 
 const Market = () => {
   const [post, setPost] = useState({
@@ -37,6 +38,9 @@ const Market = () => {
         break;
       case "Bid":
         firstTag += "#bid";
+        break;
+      case "Pass slot":
+        firstTag += "#passSlot";
         break;
       default:
         break;
@@ -79,7 +83,6 @@ const Market = () => {
     return parseFloat(v).toLocaleString() + " đ";
   };
 
-
   // handle submit form to copy template
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -96,9 +99,17 @@ _𝗚𝗶𝗮́ 𝗯𝗮́𝗻: ${converToMoney(post.giaBan)} ${
 𝗠𝗼̂ 𝘁𝗮̉ 𝘀𝗮̉𝗻 𝗽𝗵𝗮̂̉𝗺: 
 ${post.moTa}
 
+Tool tạo bài viết: https://chodengundamvn.vercel.app
 ${defaultTag} ${renderTags()} ${convertAndAddHash(post.tenSP)}
 `;
-    navigator.clipboard.writeText(template);
+    if (!post.tenSP || !post.giaBan) {
+      toast.error("Nhập giá và tên sản phẩm giúp t ông nội ơi!!!", {
+        duration: 3000,
+      });
+    } else {
+      navigator.clipboard.writeText(template);
+      toast.success("Đã húp template", { duration: 1000 });
+    }
   };
 
   return (
@@ -106,13 +117,13 @@ ${defaultTag} ${renderTags()} ${convertAndAddHash(post.tenSP)}
       <div className="grid grid-cols-2 gap-2">
         <SelectBox
           label="Hình thức"
-          options={["Cần bán", "Pre order", "Cần mua", "Trade", "Bid"]}
+          options={["Cần bán", "Cần mua", "Pre order", "Trade","Pass slot", "Bid"]}
           handleChange={(e) => setPost((v) => ({ ...v, hinhThuc: e }))}
           value={post.hinhThuc}
         />
         <SelectBox
           label="Tình trạng"
-          options={["Hàng new", "2nd", "Open check"]}
+          options={["Hàng new", "Slot Pre order","2nd", "Open check"]}
           handleChange={(e) => setPost((v) => ({ ...v, tinhTrang: e }))}
           value={post.tinhTrang}
         />
@@ -125,7 +136,7 @@ ${defaultTag} ${renderTags()} ${convertAndAddHash(post.tenSP)}
             label="Tên sản phẩm"
             placeholder="Nhập tên sản phẩm"
             type="text"
-            required
+            
             value={post.tenSP}
           />
         </div>
@@ -146,7 +157,7 @@ ${defaultTag} ${renderTags()} ${convertAndAddHash(post.tenSP)}
           label="Giá bán"
           placeholder="Nhập giá sản phẩm"
           type="number"
-          required
+        
         />
         <InputBox
           id="coc"
@@ -181,11 +192,17 @@ ${defaultTag} ${renderTags()} ${convertAndAddHash(post.tenSP)}
         placeholder="Nhập quà tặng kèm (nếu có)"
         type="text"
       />
-      <div className="w-full flex items-center justify-center gap-3">
-        <button className="button bg-indigo-600 text-white" type="submit">
-          Bấm để copy template
+      <div className="w-full py-4 flex items-center justify-center gap-2 md:gap-3 flex-col md:flex-row">
+        <button
+          className="button bg-indigo-600 text-white w-full md:w-auto"
+          type="submit"
+        >
+          Click để copy template
         </button>
-        <button onClick={resetForm} className="button bg-red-600 text-white">
+        <button
+          onClick={resetForm}
+          className="button bg-red-600 text-white w-full md:w-auto"
+        >
           Xoá sản phẩm trên
         </button>
       </div>
