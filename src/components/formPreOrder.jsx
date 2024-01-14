@@ -12,26 +12,59 @@ const FormPreOrder = ({ post, setPost, resetForm }) => {
     e.preventDefault();
 
     const template = `[${post.hinhThuc}]
-𝗧𝗲̂𝗻 𝘀𝗮̉𝗻 𝗽𝗵𝗮̂̉𝗺: ${post.tenSP} ${post.hangsx?'\n𝗛𝗮̃𝗻𝗴: ' + post.hangsx:''}
+𝗧𝗲̂𝗻 𝘀𝗮̉𝗻 𝗽𝗵𝗮̂̉𝗺: ${post.tenSP} ${post.hangsx ? "\n𝗛𝗮̃𝗻𝗴: " + post.hangsx : ""}
 𝗣𝗵𝗮́𝘁 𝗵𝗮̀𝗻𝗵: ${post.phatHanh}${post.quaTang ? "\n𝗤𝘂𝗮̀ 𝘁𝗮̣̆𝗻𝗴: " + post.quaTang : ""}
 _𝗚𝗶𝗮́ 𝗯𝗮́𝗻: ${converToMoney(post.giaBan)} ${
       post.coc ? "\n_𝗖𝗼̣𝗰: " + converToMoney(post.coc) : ""
-    }${post.bankFull ? "\n_𝗕𝗮𝗻𝗸 𝗳𝘂𝗹𝗹: " + converToMoney(post.bankFull) : ""}
-    ${post.moTa ? "\n𝗠𝗼̂ 𝘁𝗮̉ 𝘀𝗮̉𝗻 𝗽𝗵𝗮̂̉𝗺: "+post.moTa : ''}
+    }${post.bankFull ? "\n_𝗕𝗮𝗻𝗸 𝗳𝘂𝗹𝗹: " + converToMoney(post.bankFull) : ""}${
+      post.link ? "\n𝗟𝗶𝗻𝗸 𝗺𝘂𝗮: " + post.link : ""
+    }
+    ${post.moTa ? "\n𝗠𝗼̂ 𝘁𝗮̉ 𝘀𝗮̉𝗻 𝗽𝗵𝗮̂̉𝗺: " + post.moTa : ""}
 
 Tool tạo bài viết: https://chodengundamvn.vercel.app
 
 ${defaultTag} ${renderTags(post)} ${convertAndAddHash(post.tenSP)}
 `;
     if (!post.tenSP || !post.phatHanh || !post.giaBan) {
-      toast.error("Nhập đủ tên sản phẩm, ngày phát hành, giá pre giúp t ông nội ơi!!!", {
-        duration: 3000,
-      });
+      toast.error(
+        "Nhập đủ tên sản phẩm, ngày phát hành, giá pre giúp t ông nội ơi!!!",
+        {
+          duration: 3000,
+        }
+      );
     } else {
       navigator.clipboard.writeText(template);
       toast.success("Đã húp template", { duration: 1000 });
     }
   };
+
+  const handleSubmitNoTag = (e) => {
+    e.preventDefault();
+
+    const template = `[${post.hinhThuc}]
+𝗧𝗲̂𝗻 𝘀𝗮̉𝗻 𝗽𝗵𝗮̂̉𝗺: ${post.tenSP} ${post.hangsx ? "\n𝗛𝗮̃𝗻𝗴: " + post.hangsx : ""}
+𝗣𝗵𝗮́𝘁 𝗵𝗮̀𝗻𝗵: ${post.phatHanh}${post.quaTang ? "\n𝗤𝘂𝗮̀ 𝘁𝗮̣̆𝗻𝗴: " + post.quaTang : ""}
+_𝗚𝗶𝗮́ 𝗯𝗮́𝗻: ${converToMoney(post.giaBan)} ${
+      post.coc ? "\n_𝗖𝗼̣𝗰: " + converToMoney(post.coc) : ""
+    }${post.bankFull ? "\n_𝗕𝗮𝗻𝗸 𝗳𝘂𝗹𝗹: " + converToMoney(post.bankFull) : ""}${
+      post.link ? "\n𝗟𝗶𝗻𝗸 𝗺𝘂𝗮: " + post.link : ""
+    }
+    ${post.moTa ? "\n𝗠𝗼̂ 𝘁𝗮̉ 𝘀𝗮̉𝗻 𝗽𝗵𝗮̂̉𝗺: " + post.moTa : ""}
+
+`;
+    if (!post.tenSP ) {
+      toast.error(
+        "Nhập đủ tên sản phẩm giúp t ông nội ơi!!!",
+        {
+          duration: 3000,
+        }
+      );
+    } else {
+      navigator.clipboard.writeText(template);
+      toast.success("Đã húp template không có tag", { duration: 1000 });
+    }
+  };
+
   return (
     <div>
       <InputBox
@@ -90,6 +123,14 @@ ${defaultTag} ${renderTags(post)} ${convertAndAddHash(post.tenSP)}
           />
         </div>
       </div>
+      <InputBox
+        id="link"
+        handleChange={(e) => setPost((v) => ({ ...v, link: e }))}
+        label="Link mua"
+        placeholder="Link mua"
+        type="text"
+        value={post.link}
+      />
 
       <TextArea
         id={"moTa"}
@@ -110,6 +151,12 @@ ${defaultTag} ${renderTags(post)} ${convertAndAddHash(post.tenSP)}
           onClick={handleSubmit}
         >
           Click để copy template
+        </button>
+        <button
+          className="button bg-amber-400 text-black w-full md:w-auto"
+          onClick={handleSubmitNoTag}
+        >
+          Không thích có tag thì bấm vào đây :((
         </button>
         <button
           onClick={resetForm}

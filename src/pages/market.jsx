@@ -28,6 +28,7 @@ const Market = () => {
     hangsx: "",
     tenSPTrade: "",
     shop: "",
+    link:'',
   });
 
   // handle reset form
@@ -49,6 +50,7 @@ const Market = () => {
       hangsx: "",
       tenSPTrade: "",
       shop: "",
+      link:'',
     });
   };
   
